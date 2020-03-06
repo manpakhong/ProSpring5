@@ -7,17 +7,42 @@
  */
 
 
+
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id 'war'
+    id 'eclipse'
+    id 'eclipse-wtp'
 }
-/*
+eclipse {
+    project {
+        name = 'ProSpring5'
+    }
+}
+
 war {
-    from('src/main/resource/webapp') {
+    from('resources/webapp') {
         include '*'
     }
-}*/
+}
+ext {
+	// spring libs
+	springVersion = '5.2.4.RELEASE'
+	springDataVersion = '2.2.5.RELEASE'
+	springSecurityVersion = '5.3.0.RELEASE'
+	h2Version = '1.4.200'
+	tilesVersion = '3.0.8'
+	
+	//persistency libraries
+	hibernateVersion = '5.4.12.Final'
+	hibernateJpaVersion = '1.0.2.Final'
+	hibernateValidatorVersion = '6.0.18.Final'
+	
+	// misc
+	io = '2.6'
+}
+
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -43,50 +68,67 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
+    	// https://mvnrepository.com/artifact/com.h2database/h2
+	compile group: 'com.h2database', name: 'h2', version: h2Version
+    
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.12.Final'
+	compile group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
-	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.12.Final'
+	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernateVersion
     
 	// https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
-	compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.18.Final'
+	compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: hibernateValidatorVersion
+	
+	// https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api
+	compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: hibernateJpaVersion
 	
 	// https://mvnrepository.com/artifact/org.springframework/spring-core
-	compile( group: 'org.springframework', name: 'spring-core', version: '5.2.4.RELEASE'){
+	compile( group: 'org.springframework', name: 'spring-core', version: springVersion){
 		exclude(module: 'commons-logging')
 	}
 	
 	// https://mvnrepository.com/artifact/org.springframework/spring-webmvc
-	compile( group: 'org.springframework', name: 'spring-webmvc', version: '5.2.4.RELEASE'){
+	compile( group: 'org.springframework', name: 'spring-webmvc', version: springVersion){
 		exclude(module: 'commons-logging')
 	}
 
-	// https://mvnrepository.com/artifact/com.h2database/h2
-	compile group: 'com.h2database', name: 'h2', version: '1.4.200'
+
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-aop
 	
-	compile( group: 'org.springframework', name: 'spring-aop', version: '5.2.4.RELEASE'){
+	compile( group: 'org.springframework', name: 'spring-aop', version: springVersion){
 		exclude(module: 'commons-logging')
 	}
 	
 	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
-	compile (group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.2.5.RELEASE'){
+	compile (group: 'org.springframework.data', name: 'spring-data-jpa', version: springDataVersion){
 		//exclude(module: 'slf4j-api-1.7.26')
 	}
+
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-web
+	compile group: 'org.springframework.security', name: 'spring-security-web', version: springSecurityVersion
+	
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+	compile group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
+	
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs
+	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: springSecurityVersion
 
     compile "ch.qos.logback:logback-classic:1.1.3"
     compile "org.slf4j:log4j-over-slf4j:1.7.13"
 
 	// https://mvnrepository.com/artifact/org.apache.tiles/tiles-extras
-	compile group: 'org.apache.tiles', name: 'tiles-extras', version: '3.0.8'
+	compile group: 'org.apache.tiles', name: 'tiles-extras', version: tilesVersion
 		
 		
 	// https://mvnrepository.com/artifact/org.apache.tiles/tiles-servlet
-	compile group: 'org.apache.tiles', name: 'tiles-servlet', version: '3.0.8'	
+	compile group: 'org.apache.tiles', name: 'tiles-servlet', version: tilesVersion
 		
 	// https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp
-	compile group: 'org.apache.tiles', name: 'tiles-jsp', version: '3.0.8'	
+	compile group: 'org.apache.tiles', name: 'tiles-jsp', version: tilesVersion	
+	
+	// https://mvnrepository.com/artifact/javax.servlet/jstl
+	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 	
 	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
 	//testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.13.1'
@@ -100,6 +142,9 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
 	providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+	
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	compile group: 'commons-io', name: 'commons-io', version: io
 	
 	
 	providedCompile 'org.apache.tomcat:tomcat-catalina:9.0.30'
