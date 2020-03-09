@@ -9,4 +9,9 @@
         <put-attribute name="menu" value="/WEB-INF/views/menu.jspx" />
         <put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
     </definition>
+    <definition name="hkbh_default" template="/WEB-INF/layouts/hkbh_default.jspx">
+        <put-attribute name="hkbh_header" value="/WEB-INF/views/hkbh_header.jspx" />
+        <put-attribute name="hkbh_menu" value="/WEB-INF/views/hkbh_menu.jspx" />
+        <put-attribute name="hkbh_footer" value="/WEB-INF/views/hkbh_footer.jspx" />
+    </definition>
 </tiles-definitions>

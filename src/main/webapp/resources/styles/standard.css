@@ -4,6 +4,11 @@
     background: url("../images/banner.png") no-repeat 0px center;
     height: 90px;
 }
+
+.hkbh_banner {
+    background: url("../images/logo.png") no-repeat 0px center;
+    height: 150px;
+}
 /* main elements */
 
 body,div,td {

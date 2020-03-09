@@ -151,5 +151,6 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("singers/list");
+//		registry.addViewController("/im").setViewName("instant_messenger/show");
 	}
 }
