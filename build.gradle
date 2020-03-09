@@ -41,6 +41,8 @@ ext {
 	
 	// misc
 	io = '2.6'
+	
+	jacksonVersion = '2.10.3'
 }
 
 
@@ -145,6 +147,16 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/commons-io/commons-io
 	compile group: 'commons-io', name: 'commons-io', version: io
+	
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
 	
 	
 	providedCompile 'org.apache.tomcat:tomcat-catalina:9.0.30'

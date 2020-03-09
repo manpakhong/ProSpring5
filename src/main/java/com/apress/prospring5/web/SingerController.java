@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,7 +67,7 @@ public class SingerController {
     @RequestMapping(value = "/{id}", params = "form", method = RequestMethod.POST)
     public String update(@Valid Singer singer, BindingResult bindingResult, Model uiModel,
                          HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes,
-                         Locale locale) {
+                         Locale locale, @RequestParam(value="file", required=false) Part file) {
         logger.info("Updating singer");
         if (bindingResult.hasErrors()) {
             uiModel.addAttribute("message", new Message("error",
@@ -74,6 +75,24 @@ public class SingerController {
             uiModel.addAttribute("singer", singer);
             return "singers/update";
         }
+        
+        // Process upload file
+        if (file != null) {
+            logger.info("File name: " + file.getName());
+            logger.info("File size: " + file.getSize());
+            logger.info("File content type: " + file.getContentType());
+            byte[] fileContent = null;
+            try {
+                InputStream inputStream = file.getInputStream();
+                if (inputStream == null) logger.info("File inputstream is null");
+                fileContent = IOUtils.toByteArray(inputStream);
+            } catch (IOException ex) {
+                logger.error("Error saving uploaded file");
+            }
+            singer.setPhoto(fileContent);
+        }
+        
+        
         uiModel.asMap().clear();
         redirectAttributes.addFlashAttribute("message", new Message("success",
                 messageSource.getMessage("singer_save_success", new Object[]{}, locale)));
@@ -148,7 +167,8 @@ public class SingerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/listgrid", method = RequestMethod.GET, produces="application/json")
+//    @RequestMapping(value = "/listgrid", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/listgrid", method = RequestMethod.POST, produces="application/json")
     public SingerGrid listGrid(@RequestParam(value = "page", required = false) Integer page,
                                 @RequestParam(value = "rows", required = false) Integer rows,
                                 @RequestParam(value = "sidx", required = false) String sortBy,
@@ -164,17 +184,21 @@ public class SingerController {
         if (orderBy != null && orderBy.equals("birthDateString")) {
             orderBy = "birthDate";
             orderList.add(orderBy);
+        } else {
+        	
+            orderBy = "firstName";
+            orderList.add(orderBy);
         }
         
         
         if (orderBy != null && order != null) {
             if (order.equals("desc")) {
 //            	Sort.by(orderBy);
-            	Sort.by(Sort.Direction.DESC, orderBy);
+            	sort = Sort.by(Sort.Direction.DESC, orderBy);
 //            	sort = new Sort(Sort.Direction.DESC, orderList);
 //                sort = new Sort(Sort.Direction.DESC, new ArrayList<String>().add(orderBy));
             } else {
-            	Sort.by(Sort.Direction.ASC, orderBy);
+            	sort = Sort.by(Sort.Direction.ASC, orderBy);
 //                sort = new Sort(Sort.Direction.ASC, orderBy);
             }
         }
